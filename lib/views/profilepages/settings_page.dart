@@ -1,4 +1,3 @@
-
 // settings_page.dart
 import 'package:bennu_app/viewmodels/profile_viewmodel.dart';
 import 'package:bennu_app/views/settingpages/rules_page.dart';
@@ -22,16 +21,14 @@ class SettingsPage extends StatelessWidget {
       create: (_) => ProfileViewModel()..fetchProfileDetails(),
       child: Consumer<ProfileViewModel>(
         builder: (_, viewModel, __) {
-          Scaffold(
+          return Scaffold(
             appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 90, 0, 0),
-            title: const Text('SETTINGS', style: TextStyle(color: Colors.white)),
-          ),
+              backgroundColor: const Color.fromARGB(255, 6, 0, 60),
+              title: const Text('SETTINGS', style: TextStyle(color: Colors.white)),
+            ),
             backgroundColor: Colors.white,
-            body: Consumer (
-              builder: (context, viewModel, child) {
-                return ListView(
-                children: [
+            body: ListView(
+              children: [
                 ListTile(
                   title: const Text('Bennu Rules', style: TextStyle(color: Colors.black)),
                   onTap: () {
@@ -61,21 +58,9 @@ class SettingsPage extends StatelessWidget {
                 ),
                 SwitchListTile(
                   title: const Text('Account Closed'),
-                  value: viewModel?.isAccountClosed ?? false,
+                  value: viewModel.isAccountClosed ?? false,
                   onChanged: (value) {
-                    Consumer<ProfileViewModel>(
-                      builder: (_, viewModel, __) {
-                        return SwitchListTile(
-                          title: const Text('Account Closed'),
-                          value: viewModel?.isAccountClosed ?? false,
-                          onChanged: (value) {
-                            viewModel?.toggleAccountClosed(value);
-                          },
-                          inactiveTrackColor: const Color.fromARGB(108, 84, 74, 70),
-                          activeColor: const Color.fromARGB(255, 0, 255, 8),
-                        );
-                      },
-                    ),
+                    viewModel.toggleAccountClosed(value);
                   },
                   inactiveTrackColor: const Color.fromARGB(108, 84, 74, 70),
                   activeColor: const Color.fromARGB(255, 0, 255, 8),
@@ -90,8 +75,10 @@ class SettingsPage extends StatelessWidget {
                   title: const Text('Development'),
                   onTap: () async {
                     const url = 'https://github.com/brief69/bennu_app';
-                    if (await canLaunchUrl(Uri.parse(url))) {
-                       await launchUrl(Uri.parse(url));
+                    // ignore: deprecated_member_use
+                    if (await canLaunch(url)) {
+                      // ignore: deprecated_member_use
+                      await launch(url);
                     } else {
                       throw 'Could not launch $url';
                     }
@@ -110,10 +97,10 @@ class SettingsPage extends StatelessWidget {
                   }
                 ),
               ],
-            );
-          },
-        ),
-      );
-    }
+            ),
+          );
+        }
+      )
+    );
   }
 }

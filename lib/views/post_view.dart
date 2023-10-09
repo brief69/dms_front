@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:bennu_app/models/post.dart';
+import 'package:bennu_app/viewmodels/post_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -76,8 +77,7 @@ class PostViewState extends State<PostView> {
 
     // Firestoreに投稿を保存
     FirebaseFirestore.instance.collection('posts').add(post.toMap());
-
-    // _viewModel.updateShouldNotify(post as PostViewModel); // Assuming that the ViewModel has the correct methods
+    PostViewModel.updateShouldNotify(post as PostViewModel); // Assuming that the ViewModel has the correct methods
   }
 
   @override

@@ -16,24 +16,24 @@ class SearchPage extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,  // 背景色を黒に設定
+          backgroundColor: Colors.black,
           titleTextStyle: const TextStyle(
-            fontFamily: 'Roboto',  // フォントをRobotoに設定
-            color: Colors.white,    // 文字色を白に設定
+            fontFamily: 'Roboto',
+            color: Colors.white,
           ),
           title: TextField(
             controller: ref.read(searchProvider).searchController,
             onSubmitted: (query) {
               ref.read(searchProvider).fetchSearchResults(query);
             },
-            style: const TextStyle(color: Colors.white),  // 入力文字の色を白に設定
+            style: const TextStyle(color: Colors.white),  // 入力文字の色が白
           ),
           bottom: const TabBar(
-            labelColor: Colors.white,  // タブの文字色を白に設定
+            labelColor: Colors.white,  // タブの文字色が白
             tabs: [
-              Tab(text: 'サイト'),
-              Tab(text: 'プロダクト'),
-              Tab(text: 'ユーザー'),
+              Tab(text: 'Site'),
+              Tab(text: 'Product'),
+              Tab(text: 'User'),
             ],
           ),
         ),

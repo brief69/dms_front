@@ -46,15 +46,7 @@ class WalletService {
   Future<String?> getPrivateKey() async {
     return await storage.read(key: 'solanaPrivateKey');
   }
-
-  // ... トランザクションの署名、トークンの送受信、その他の機能もここに追加する
 }
-
-// wallet_service.dartは、
-// Solanaウォレットに関連する操作をサポートするWalletServiceクラスと、
-// ウォレット情報を表現するためのWalletクラスを定義しています。
-
-// 以下が各部分の詳細説明です：
 
 // 'package:solana/solana.dart': Solana関連の操作をサポートする外部ライブラリをインポートしています。
 // 'package:flutter_secure_storage/flutter_secure_storage.dart': セキュアなストレージの操作に関連する機能を提供するライブラリ。

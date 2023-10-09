@@ -3,7 +3,7 @@
 // contact_support_page.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:bennu_app/viewmodels/settingviewmodels/contact_viewmodel.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<SettingsViewModel>(context, listen: false);
+    var viewModel = Provider.of<ContactViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('CONTACT', style: TextStyle(color: Colors.white)),
@@ -51,7 +51,9 @@ class ContactPageState extends State<ContactPage> {
               child: ElevatedButton(
                 onPressed: () async {
                   await viewModel.sendFeedback(contactController.text);
-                  // TODO: #13 成功した場合の処理を追加
+                  contactController.clear();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
                 },
                 child: const Text('送信'),
               ),
@@ -67,10 +69,4 @@ class ContactPageState extends State<ContactPage> {
       ),
     );
   }
-}
-
-class SettingsViewModel {
-  get contactViaTwitter => null;
-
-  sendFeedback(String text) {}
 }

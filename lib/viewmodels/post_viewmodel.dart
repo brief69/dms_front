@@ -45,6 +45,8 @@ class PostViewModel extends ChangeNotifier {
       throw UploadDataException(_errorMessage!);
     }
   }
+
+  static void updateShouldNotify(PostViewModel post) {}
 }
 
 class FetchDataException implements Exception {

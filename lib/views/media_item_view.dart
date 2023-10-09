@@ -20,6 +20,7 @@ class MediaItemViewState extends State<MediaItemView> {
   @override
   void initState() {
     super.initState();
+    // ignore: deprecated_member_use
     _controller = VideoPlayerController.network(widget.viewModel.videoUrl)
       ..initialize().then((_) {
         setState(() {

@@ -11,7 +11,7 @@ class MainPage extends ConsumerWidget {
   final List<Widget> _children = [
     HomeView(),
     const SearchPage(),
-    PostView(),
+    const PostView(),
     const BoxView(),
     ProfilePage(),
   ];

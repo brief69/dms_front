@@ -10,6 +10,8 @@ class ProfileViewModel extends ChangeNotifier {
   User? _user;
   User? get user => _user;
 
+  get isAccountClosed => null;
+
   // ユーザーデータをロード
   Future<void> loadUserData(String userId) async {
     try {
@@ -37,4 +39,6 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   fetchProfileDetails() {}
+
+  void toggleAccountClosed(bool value) {}
 }
