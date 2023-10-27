@@ -53,9 +53,6 @@ class SettingsPage extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const AddressSetPage()));
                   },
                 ),
-                const ListTile(
-                  title: Text('AUTH004', style: TextStyle(color: Color.fromARGB(180, 60, 0, 0))),
-                ),
                 SwitchListTile(
                   title: const Text('Account Closed'),
                   value: viewModel.isAccountClosed ?? false,

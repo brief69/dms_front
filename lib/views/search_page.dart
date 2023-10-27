@@ -26,14 +26,15 @@ class SearchPage extends ConsumerWidget {
             onSubmitted: (query) {
               ref.read(searchProvider).fetchSearchResults(query);
             },
-            style: const TextStyle(color: Colors.white),  // 入力文字の色が白
+            style: const TextStyle(color: Colors.white),
           ),
           bottom: const TabBar(
-            labelColor: Colors.white,  // タブの文字色が白
+            labelColor: Colors.white,
             tabs: [
               Tab(text: 'Site'),
               Tab(text: 'Product'),
               Tab(text: 'User'),
+              Tab(text: '家電')
             ],
           ),
         ),

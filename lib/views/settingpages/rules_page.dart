@@ -40,31 +40,34 @@ class UserRulesTab extends StatelessWidget {
     return ListView(
       children: const [
         ListTile(
-          title: Text('最初のルールは、ルールがないこと'),
+          title: Text('正直に取引を行いましょう。'),
         ),
         ListTile(
-          title: Text('実際に新品かどうかよりも、新品に見えるかどうかが重要だったりする'),
+          title: Text('実際に新品かどうかよりも、使えるかどうかを重視する。'),
         ),
         ListTile(
-          title: Text('このアプリは、いわば取引の究極の民主制を保持しています。'),
+          title: Text('Bennuは、完全に民主制の取引アプリです。'),
         ),
         ListTile(
-          title: Text('逆にいうと、商品を売る人も商品を買う人も、自分の判断で取引を行うことができるということです。'),
+          title: Text('商品を売る人も商品を買う人も、自分の判断で取引を行うことができるということです。'),
         ),
         ListTile(
-          title: Text(''),
+          title: Text('取引トラブルが起これば、コメントに書く、書かれる'),
         ),
         ListTile(
-          title: Text(''),
+          title: Text('相手に多くを求めなすぎないこと'),
         ),
         ListTile(
-          title: Text(''),
+          title: Text('Bennuには複利があります。商品は定価の半額にすること'),
         ),
         ListTile(
-          title: Text(''),
+          title: Text('個人の発明家が、商品を販売して良い(※ただし、以下に注意)'),
         ),
         ListTile(
-          title: Text(''),
+          title: Text('コメントのbadボタンは、コメントがステマだと判断した時に押す'),
+        ),
+        ListTile(
+          title: Text('badボタンが一定以上になると、アカウント停止、収益没収の対象です')
         ),
       ],
     );
@@ -124,8 +127,4 @@ class ManagementRulesTab extends StatelessWidget {
 // あるいは、あなたが思っていたよりも、ずっとずっと安かったり、高かったりすることがあります。
 // そんなとき、あなたは、その商品を買ったお店に、その商品を返品したいと言います。
 // そのとき、お店の人は、あなたに、返品はできないと言うかもしれません。
-// あなたは、そのとき、お店の人に、返品できないのはおかしいと言うかもしれません。
-// お店の人は、あなたに、返品できないのは、お店のルールだからだと言うかもしれません。
-// あなたは、そのとき、お店の人に、ルールはおかしいと言うかもしれません。
-// 
 

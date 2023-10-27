@@ -99,3 +99,11 @@ class PostViewState extends State<PostView> {
     );
   }
 }
+
+
+// Relayする（※再出品して複利を得る）　を選択した場合、userの購入履歴をモーダルで表示する。
+// そのモーダルは、userの購入履歴のグリッド表示のどれかを選択できるようになっている。
+// 選択すると、relay商品であることが自動選択される。
+// RelayからRelayではないのかを選択する項目
+// Relay投稿ではない限り、Relay履歴は表示されない。
+// 

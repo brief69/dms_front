@@ -47,3 +47,5 @@ class User {
   get email => null;
 
   get publicKey => null;
+
+

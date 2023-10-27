@@ -5,7 +5,7 @@ import '../models/berry_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future<void> mintBerryToken(DocumentSnapshot<Map<String, dynamic>> post) async {
-  final storage = FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   // 秘密キーの取得
   final privateKeyString = await storage.read(key: 'privateKey');

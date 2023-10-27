@@ -33,7 +33,6 @@ class HomeViewState extends State<HomeView> {
         caption: postData['caption'] ?? '',
         stock: postData['stock'] ?? 0,
         price: postData['price'] ?? 0,
-        relay: postData['relays'] ?? 0,
       ),
     );
   }
@@ -67,7 +66,6 @@ class HomeViewState extends State<HomeView> {
               postDate: doc['postDate'],
               likes: doc['likes'],
               comments: doc['comments'],
-              relays: doc['relays'],
               shares: doc['shares'],
               purchases: doc['Buy'],
               media: doc['media'],

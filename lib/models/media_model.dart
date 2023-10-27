@@ -1,5 +1,6 @@
 
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MediaModel {
@@ -14,7 +15,6 @@ class MediaModel {
   final String caption;
   final int stock;
   final int price;
-  final int relay;
 
   MediaModel({
     required this.videoUrl,
@@ -27,8 +27,7 @@ class MediaModel {
     required this.shares,
     required this.caption,
     required this.stock,
-    required this.price,
-    required this.relay, required FirebaseFirestore firestore,
+    required this.price, required FirebaseFirestore firestore,
   });
 
   get postDate => null;

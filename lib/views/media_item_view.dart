@@ -8,7 +8,7 @@ import 'package:bennu_app/viewmodels/media_viewmodel.dart';
 class MediaItemView extends StatefulWidget {
   final MediaViewModel viewModel;
 
-  const MediaItemView({required this.viewModel, Key? key, required caption, required itemlimit, required postDate, required likes, required comments, required relays, required shares, required purchases, required media, required boxin}) : super(key: key);
+  const MediaItemView({required this.viewModel, Key? key, required caption, required itemlimit, required postDate, required likes, required comments, required shares, required purchases, required media, required boxin}) : super(key: key);
 
   @override
   MediaItemViewState createState() => MediaItemViewState();
@@ -108,8 +108,6 @@ class MediaItemViewState extends State<MediaItemView> {
               const SizedBox(width: 10),
               Text('\$${widget.viewModel.price}', style: const TextStyle(color: Colors.white)),
               const SizedBox(width: 10),
-              const Icon(Icons.location_on, color: Colors.white),
-              Text('${widget.viewModel.relay}', style: const TextStyle(color: Colors.white)),
             ],
           ),
         ),
@@ -153,7 +151,7 @@ class MediaReelState extends State<MediaReel> {
               _keys[index].currentState?.pause();
             }
           },
-          child: MediaItemView(viewModel: widget.viewModels[index], key: _keys[index], caption: null, itemlimit: null, postDate: null, likes: null, comments: null, relays: null, shares: null, purchases: null, media: null, boxin: null,),
+          child: MediaItemView(viewModel: widget.viewModels[index], key: _keys[index], caption: null, itemlimit: null, postDate: null, likes: null, comments: null, shares: null, purchases: null, media: null, boxin: null,),
         );
       },
     );
