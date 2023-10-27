@@ -1,9 +1,9 @@
 import 'package:bennu_app/viewmodels/mainpage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bennu_app/views/home_view.dart';
+import 'package:bennu_app/views/homepages/home_view.dart';
 import 'package:bennu_app/views/search_page.dart';
-import 'package:bennu_app/views/post_view.dart';
+import 'package:bennu_app/views/postpages/post_view.dart';
 import 'package:bennu_app/views/box_view.dart';
 import 'package:bennu_app/views/profilepages/profile_page.dart';
 

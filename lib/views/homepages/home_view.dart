@@ -1,7 +1,7 @@
 
-
+// home_view.dart
 import 'package:bennu_app/models/media_model.dart';
-import 'package:bennu_app/views/media_item_view.dart';
+import 'package:bennu_app/views/homepages/media_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bennu_app/viewmodels/media_viewmodel.dart';

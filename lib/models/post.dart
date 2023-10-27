@@ -58,6 +58,7 @@ class Post {
       userIcon: map['userIcon'],
       price: map['price'],
       stock: map['stock'],
+      
     );
   }
 }

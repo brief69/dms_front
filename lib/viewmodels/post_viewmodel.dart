@@ -1,60 +1,98 @@
 
 
+import 'dart:io';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:bennu_app/models/post.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:bennu_app/models/currency.dart';
 
-class PostViewModel extends ChangeNotifier {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+final postViewModelProvider = StateNotifierProvider<PostViewModel, List<XFile?>>((ref) => PostViewModel());
 
-  // エラーや成功の状態を保持するための変数
-  bool _isUploading = false;
-  String? _errorMessage;
+class PostViewModel extends StateNotifier<List<XFile?>> {
+  PostViewModel() : super([]);
 
-  bool get isUploading => _isUploading;
-  String? get errorMessage => _errorMessage;
+  final ImagePicker _picker = ImagePicker();
+  String _caption = "";
+  Currency? selectedCurrency;
+  int stock = 0;
 
-  Future<List<Post>> fetchPosts() async {
-    try {
-      QuerySnapshot snapshot = await _firestore.collection('posts').get();
+  void setCaption(String value) {
+    _caption = value;
+  }
 
-      List<Post> posts = snapshot.docs.map((doc) {
-        return PostFirestore.fromFirestore(doc);
-      }).toList();
+  void setSelectedCurrency(Currency value) {
+    selectedCurrency = value;
+  }
 
-      return posts;
-    } catch (e) {
-      ("Error fetching posts: $e");
-      throw FetchDataException("Error fetching posts from Firestore: $e");
+  void setStock(String value) {
+    if (int.tryParse(value) != null && int.parse(value) <= 1000) {
+      stock = int.parse(value);
     }
   }
 
-  Future<void> uploadPost(Post post) async {
-    try {
-      _isUploading = true;
-      notifyListeners();
-
-      await _firestore.collection('posts').add(post.toFirestore());
-
-      _isUploading = false;
-      notifyListeners();
-    } catch (e) {
-      _errorMessage = "Error uploading post to Firestore: $e";
-      _isUploading = false;
-      notifyListeners();
-      throw UploadDataException(_errorMessage!);
+  void increaseStock() {
+    if (stock < 1000) {
+      stock++;
     }
   }
 
-  static void updateShouldNotify(PostViewModel post) {}
-}
+  void decreaseStock() {
+    if (stock > 0) {
+      stock--;
+    }
+  }
 
-class FetchDataException implements Exception {
-  final String message;
-  FetchDataException(this.message);
-}
+  Future<void> pickMediaFromGallery() async {
+    List<XFile?> medias = await _picker.pickMultiImage();
+    if (medias.length <= 6) {
+      state = medias;
+    }
+  }
 
-class UploadDataException implements Exception {
-  final String message;
-  UploadDataException(this.message);
+  Future<void> captureMediaWithCamera() async {
+    XFile? media = await _picker.pickVideo(source: ImageSource.camera, maxDuration: const Duration(minutes: 1));
+    if (media != null) {
+      state = [media];
+    }
+  }
+
+  Future<String?> uploadMediaToFirebase(XFile media) async {
+    XFile file = File(media.path) as XFile;
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("uploads/${DateTime.now().millisecondsSinceEpoch}");
+    UploadTask uploadTask = ref.putFile(file as File);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+    String? downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<void> uploadMediaAndCaption() async {
+    List<String> mediaUrls = [];
+    for (XFile? media in state) {
+      if (media != null) {
+        String? mediaUrl = await uploadMediaToFirebase(media);
+        if (mediaUrl != null) mediaUrls.add(mediaUrl);
+      }
+    }
+
+    final post = Post(
+      caption: _caption,
+      mediaUrls: mediaUrls,
+      postDate: DateTime.now(),
+      userIcon: '',
+      likesCount: 0,
+      commentsCount: 0,
+      relayCount: 0,
+      shareCount: 0,
+      buyCount: 0,
+      price: 0,
+      stock: stock,
+    );
+
+    FirebaseFirestore.instance.collection('posts').add(post.toMap());
+    // NOTE: updateShouldNotify seems to be misplaced. If it's needed, it should be placed properly.
+    // PostViewModel.updateShouldNotify(post as PostViewModel);
+  }
 }
