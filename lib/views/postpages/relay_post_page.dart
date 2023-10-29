@@ -12,19 +12,19 @@ class RelayPostPage extends StatefulWidget {
 }
 
 class RelayPostPageState extends State<RelayPostPage> {
-  List<DocumentSnapshot>? _purchaseHistory; // 購入履歴データを保持するリスト
+  List<DocumentSnapshot>? _buyHistory; // 購入履歴データを保持するリスト
 
   @override
   void initState() {
     super.initState();
-    _fetchPurchaseHistory();
+    buyHistory();
   }
 
-  _fetchPurchaseHistory() async {
-    // ここでは仮に'purchaseHistory'というコレクションから購入履歴を取得するとします。
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('purchaseHistory').get();
+  buyHistory() async {
+    // buyHistoryコレクションから購入履歴を取得するとします。
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('buyHistory').get();
     setState(() {
-      _purchaseHistory = snapshot.docs;
+      _buyHistory = snapshot.docs;
     });
   }
 
@@ -32,8 +32,8 @@ class RelayPostPageState extends State<RelayPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add RePost'),
-        backgroundColor: Colors.blue,
+        title: const Text('Add RePost', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,10 +48,10 @@ class RelayPostPageState extends State<RelayPostPage> {
                   builder: (context) {
                     return GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                      itemCount: _purchaseHistory?.length ?? 0,
+                      itemCount: _buyHistory?.length ?? 0,
                       itemBuilder: (context, index) {
                         // ここで_mediaUrlはFirestoreの構造に依存するので、適切なフィールド名に変更してください。
-                        String mediaUrl = _purchaseHistory![index]['mediaUrl'];
+                        String mediaUrl = _buyHistory![index]['mediaUrl'];
                         return GestureDetector(
                           onTap: () {
                             // 選択したアイテムの処理を実装する
@@ -78,7 +78,7 @@ class RelayPostPageState extends State<RelayPostPage> {
               onPressed: () {
                 // Relayボタンの処理を実装
               },
-              child: const Text('Relay'),
+              child: const Text('RePost'),// TODO: RePostボタンの色はどうしよう。大きさは大きく、形は丸い。
             ),
           ],
         ),

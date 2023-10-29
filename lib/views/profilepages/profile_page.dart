@@ -1,167 +1,148 @@
 
+
 // profile_page.dart
+import 'package:bennu_app/viewmodels/profile_viewmodel.dart';
+import 'package:bennu_app/views/profilepages/followers_page.dart';
+import 'package:bennu_app/views/profilepages/following_page.dart';
+import 'package:bennu_app/views/profilepages/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'settings_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends StatelessWidget {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  ProfilePage({Key? key}) : super(key: key);
+final viewModelProvider = Provider<ProfileViewModel>((ref) => ProfileViewModel());
+
+class ProfilePage extends ConsumerWidget {
+  const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.watch(viewModelProvider);
+
+    void goToEditProfilePage() {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+    }
+
+    void showFollowers() {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FollowersPage(uid: '',)));
+    }
+
+    void showFollowing() {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FollowingPage(uid: '',)));
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        title: const Text("Profile", style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromARGB(255, 0, 12, 0),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            },
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage())),
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: _firestore.collection('users').doc('userId').snapshots(), // 'userId'を適切に置き換えてください
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          var userData = snapshot.data;
-          return Column(
-            children: [
-              // User Icon, Username, and Rating
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Assume openImagePicker() is a function to allow users to pick and upload a new icon
-                      openImagePicker(context, userData);
-                    },
-                    child: Image.network(userData?['userIcon'] ?? ''),
-                  ),
-                  Column(
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
                     children: [
-                      Text(userData?['userName'] ?? ''),
-                      StarRating(rating: userData?['userRating'] ?? 0),
+                      GestureDetector(
+                        onTap: () => viewModel.pickUserIcon(),
+                        child: Image.network(viewModel.userIcon),
+                      ),
+                      ElevatedButton(
+                        onPressed: goToEditProfilePage,
+                        child: Text(viewModel.username),
+                      ),
+                      Row( // TODO;
+                        children: [
+                          GestureDetector(
+                            onTap: showFollowers,
+                            child: Text('follow ${viewModel.followersCount}'),
+                          ),
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: showFollowing,
+                            child: Text('follower ${viewModel.followingCount}'),
+                          ),
+                        ],
+                      ), // TODO:フォローフォロワーのカウントはバックエンド側で行い、viewmodelでfirestoreから取得して、ここでは取得したデータを表示するのみにする
                     ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () => viewModel.goToQRPage(),
+                        child: viewModel.qrImageData != null 
+                            ? Image.memory(viewModel.qrImageData!) 
+                            : const CircularProgressIndicator(),
+                      ),
+                      GestureDetector(
+                        onTap: () => viewModel.copySolanaAddress(),
+                        child: Text(viewModel.solanaAddress, maxLines: 2),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 7,
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  const TabBar(
+                    tabs: [
+                      Tab(text: 'History'),
+                      Tab(text: 'Wallet'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        const Column(
+                          children: [
+                            TabBar(
+                              tabs: [
+                                Tab(text: 'Post'),
+                                Tab(text: 'Likes'),
+                                Tab(text: 'Buy'),
+                              ],
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                children: [
+                                  // TODO:それぞれのタブの中身を実装
+                                  // TODO: post,like,buyは、全て同じようなグリッドビューで表示、viewのコードは使い回して、ユーザーが今いる画面に応じて取得するデータのみ変更して表示する。
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListView(
+                          // ウォレットのリストビューの中身を実装
+                          // Walletの中身は、Listviewで表示されており、solanaトークンの送受信、円の支払い履歴などの全てを表示する。将来的には検索機能をつけるが今はしない。
+                          // 必要なデータは、支払った日、受け取った日、その額、berryかjpyのどちらで支払ったのかの単位、支払った対象のcaptionの一部、
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              // Solana Address QR and Public Key
-              QrImage(
-                data: userData?['solanaAddress'] ?? '',// TODO: これを解決するにはまず、solanaAddressを取得する必要がある
-              ),
-              InkWell(
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: userData?['solanaAddress'] ?? ''));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Address copied!')),
-                  );
-                },
-                child: Text(userData?['solanaAddress'] ?? ''),
-              ),
-              // Tabs for History and Wallet
-              DefaultTabController(
-                length: 6,
-                child: Column(
-                  children: [
-                    const TabBar(
-                      tabs: [
-                        Tab(text: 'Post'),
-                        Tab(text: 'Like'),
-                        Tab(text: 'Comment'),
-                        Tab(text: 'Purchase'),
-                        Tab(text: 'Balance'),
-                        Tab(text: 'Transaction'),
-                      ],
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          buildGridView(userData?['postHistory']),
-                          buildGridView(userData?['likeHistory']),
-                          buildGridView(userData?['commentHistory']),
-                          buildGridView(userData?['purchaseHistory']),
-                          // Balance and Transaction can have different implementations
-                          buildBalanceView(userData),
-                          buildTransactionView(userData),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  GridView buildGridView(List<dynamic>? historyData) {
-    return GridView.builder(
-      itemCount: historyData?.length ?? 0,
-      itemBuilder: (context, index) {
-        return Image.network(historyData?[index] ?? '');
-      }, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 4.0,
-        mainAxisSpacing: 4.0,
-      )
-    );
-  }
-
-  Widget buildBalanceView(dynamic userData) {
-    // You can have a custom widget for showing the balance
-    return Column(
-      children: [
-        Text("Token: ${userData?['tokenBalance']}"),
-        Text("Currency: ${userData?['currencyBalance']}"),
-      ],
-    );
-  }
-
-  ListView buildTransactionView(dynamic userData) {
-    List<dynamic>? transactions = userData?['transactions'];
-    return ListView.builder(
-      itemCount: transactions?.length ?? 0,
-      itemBuilder: (context, index) {
-        var transaction = transactions?[index];
-        return ListTile(
-          title: Text(transaction?['type'] ?? ''),
-          subtitle: Text(transaction?['amount'] ?? ''),
-          // Additional details can be added
-        );
-      },
-    );
-  }
-
-  void openImagePicker(BuildContext context, dynamic userData) {
-    // Implementation for opening image picker and updating Firestore
-  }
-}
-
-class StarRating extends StatelessWidget {
-  final int rating;
-
-  const StarRating({super.key, required this.rating});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(5, (index) => 
-        Icon(
-          index < rating ? Icons.star : Icons.star_border,
-          color: Colors.yellow,
-        )
+            ),
+          ),
+        ],
       ),
     );
   }

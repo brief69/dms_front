@@ -1,42 +1,46 @@
 
 
+// user.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String id;
-  final String name;
   late final String userIcon;
-  final int userRating;
+  final String userName;
   final String solanaAddress;
   final List<dynamic> postHistory;
-  
+  final List<dynamic> likesHistory;
+  final List<dynamic> buyHistory;
+  final int followingCount;
+  final int followerCount;
 
-  User({
+  User(required String id, {
     required this.id,
-    required this.name,
+    required this.userName,
     required this.userIcon,
-    required this.userRating,
     required this.solanaAddress,
-    required this.postHistory, required String email, required publicKey, 
+    required this.postHistory,
+    required this.likesHistory,
+    required this.buyHistory,
+    required this.followingCount,
+    required this.followerCount,
   });
 
   // FirestoreのDocumentSnapshotからUserモデルに変換するためのファクトリメソッド
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
       id: doc.id,
-      name: doc['userName'],
+      userName: doc['userName'],
       userIcon: doc['userIcon'],
-      userRating: doc['userRating'],
       solanaAddress: doc['solanaAddress'],
-      postHistory: doc['postHistory'], 
-      email: '', publicKey: null, 
-      
+      postHistory: List<dynamic>.from(doc['postHistory']),
+      likesHistory: List<dynamic>.from(doc['likesHistory']),
+      buyHistory: List<dynamic>.from(doc['buyHistory']),
+      followingCount: doc['followingCount'] ?? 0,  // null safetyを考慮
+      followerCount: doc['followerCount'] ?? 0,    // null safetyを考慮
     );
   }
 
-  get email => null;
-
-  get publicKey => null;
   // ... other properties and methods ...
 
   Future<bool> deleteCurrentUser() async {
@@ -44,8 +48,3 @@ class User {
     return true; // return true if the deletion was successful
   }
 }
-  get email => null;
-
-  get publicKey => null;
-
-

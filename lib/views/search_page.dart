@@ -16,7 +16,7 @@ class SearchPage extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           titleTextStyle: const TextStyle(
             fontFamily: 'Roboto',
             color: Colors.white,
@@ -31,7 +31,7 @@ class SearchPage extends ConsumerWidget {
           bottom: const TabBar(
             labelColor: Colors.white,
             tabs: [
-              Tab(text: 'Site'),
+              Tab(text: 'Site'),// グリッドビューで、ネットショッピングの全てがここで買える。間に別のユーザーがfunすることで。
               Tab(text: 'Product'),
               Tab(text: 'User'),
               Tab(text: '家電')

@@ -17,7 +17,7 @@ class PostView extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text("Add Post", style: TextStyle(color: Colors.white)),
       ),
       body: Column(

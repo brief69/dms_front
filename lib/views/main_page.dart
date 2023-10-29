@@ -13,7 +13,7 @@ class MainPage extends ConsumerWidget {
     const SearchPage(),
     const PostView(),
     const BoxView(),
-    ProfilePage(),
+    const ProfilePage(),
   ];
 
   MainPage({Key? key}) : super(key: key);

@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
         builder: (_, viewModel, __) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: const Color.fromARGB(255, 6, 0, 60),
+              backgroundColor: const Color.fromARGB(255, 0, 13, 3),
               title: const Text('SETTINGS', style: TextStyle(color: Colors.white)),
             ),
             backgroundColor: Colors.white,
@@ -37,30 +37,21 @@ class SettingsPage extends StatelessWidget {
                 ),
                 ListTile(
                   title: const Text('Email', style: TextStyle(color: Colors.black)),
-                  onTap: () {
+                  onTap: () {// 一つまでしか設定できない。
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const EditEmailPage()));
                   }
                 ),
                 ListTile(
                   title: const Text('Bank Account', style: TextStyle(color: Colors.black)),
-                  onTap: () {
+                  onTap: () {// 一つまでしか設定できない。
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const BankAccountSetupPage()));
                   },
                 ),
                 ListTile(
                   title: const Text('Address', style: TextStyle(color: Colors.black)),
-                  onTap: () {
+                  onTap: () { // 三つまで選択できる。
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const AddressSetPage()));
                   },
-                ),
-                SwitchListTile(
-                  title: const Text('Account Closed'),
-                  value: viewModel.isAccountClosed ?? false,
-                  onChanged: (value) {
-                    viewModel.toggleAccountClosed(value);
-                  },
-                  inactiveTrackColor: const Color.fromARGB(108, 84, 74, 70),
-                  activeColor: const Color.fromARGB(255, 0, 255, 8),
                 ),
                 ListTile(
                   title: const Text('Contacts'),

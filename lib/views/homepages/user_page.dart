@@ -20,27 +20,27 @@ class UserPage extends ConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Text(user.username, style: const TextStyle(color: Colors.white)),
-            Image.network(user.iconURL),
+            Text(user.userName, style: const TextStyle(color: Colors.white)),
+            Image.network(user.userIcon),
             TextButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => FollowersPage(uid: uid)));
               },
-              child: Text("Followers: ${user.followers.length}", style: const TextStyle(color: Colors.white)),
+              child: Text("Followers: ${user.followerCount}", style: const TextStyle(color: Colors.white)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => FollowingPage(uid: uid)));
               },
-              child: Text("Following: ${user.following.length}", style: const TextStyle(color: Colors.white)),
+              child: Text("Following: ${user.followingCount}", style: const TextStyle(color: Colors.white)),
             ),
             const Text("History", style: TextStyle(color: Colors.white)),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                itemCount: user.posts.length,
+                itemCount: user.postHistory.length,
                 itemBuilder: (context, index) {
-                  return Image.network(user.posts[index]);
+                  return Image.network(user.postHistory[index]);
                 },
               ),
             )
@@ -50,4 +50,9 @@ class UserPage extends ConsumerWidget {
     );
   }
 }
+
+// TODO: このページは他のユーザーから見るページだが、他のユーザーが見るページは同じでいい。
+// 閲覧のみか、データ操作が可能かどうかに違いしかないので、後々にprofilepageを参照する。
+// 
+
 

@@ -1,20 +1,18 @@
 
-
-
-
 import 'package:bennu_app/models/user.dart';
 
 class DeleteAccountViewModel {
   final _userModel = 
     User(
       id: '',
-      name: '', 
       userIcon: '', 
-      userRating: 0, 
+      userName: '', 
       solanaAddress: '', 
       postHistory: [], 
-      email: '', 
-      publicKey: null
+      likesHistory: [], 
+      buyHistory: [], 
+      followingCount: ,
+      followerCount: ,
     );
 
   Future<bool> deleteAccount() async {

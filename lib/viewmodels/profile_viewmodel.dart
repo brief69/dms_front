@@ -1,6 +1,6 @@
 
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,35 +10,35 @@ class ProfileViewModel extends ChangeNotifier {
   User? _user;
   User? get user => _user;
 
-  get isAccountClosed => null;
+  get qrImageData => null;
 
   // ユーザーデータをロード
   Future<void> loadUserData(String userId) async {
-    try {
       DocumentSnapshot doc = await _firestore.collection('users').doc(userId).get();
       _user = User.fromDocument(doc);
       notifyListeners();
-    } catch (e) {
-      ("Error loading user data: $e");
-      // エラーハンドリングを適切に行う必要があります
-    }
   }
 
   // ユーザーアイコンを更新
   Future<void> updateUserIcon(String userId, String newIconUrl) async {
-    try {
       await _firestore.collection('users').doc(userId).update({
         'userIcon': newIconUrl,
       });
       _user?.userIcon = newIconUrl;
       notifyListeners();
-    } catch (e) {
-      ("Error updating user icon: $e");
-      // ここでエラーハンドリングを適切に行う必要があります
-    }
   }
 
-  fetchProfileDetails() {}
+   Future<void> fetchQRCodeFromFirestore(String userId) async {
+      // userIdを元にFirestoreのusersコレクションからユーザーのデータを取得
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
 
-  void toggleAccountClosed(bool value) {}
+      if (userDoc.exists) {
+        // Firestoreから取得したデータの中からQRコードのデータを取り出す
+        // データ構造に応じて適切なキー名を指定する
+        Uint8List? fetchedData = userDoc.data()?['qrImageData'] as Uint8List?;
+      }
+   }
+
+  // Solanaアドレスをコピー
+  String get solanaAddress => _user?.solanaAddress ?? '';
 }
