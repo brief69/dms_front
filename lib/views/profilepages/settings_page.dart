@@ -8,7 +8,6 @@ import 'package:bennu_app/views/settingpages/deleteAccount_page.dart';
 import 'package:bennu_app/views/settingpages/edit_address_page.dart';
 import 'package:bennu_app/views/settingpages/edit_email_page.dart';
 import 'package:bennu_app/views/settingpages/logout_page.dart';
-import 'package:bennu_app/views/settingpages/bank_account_page.dart';
 import 'package:bennu_app/views/settingpages/contact_support_page.dart';
 
 
@@ -37,21 +36,34 @@ class SettingsPage extends StatelessWidget {
                 ),
                 ListTile(
                   title: const Text('Email', style: TextStyle(color: Colors.black)),
-                  onTap: () {// 一つまでしか設定できない。
+                  onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const EditEmailPage()));
-                  }
+                  }// TODO: emailはeditk_profile_page.dartに任せるかなー？
+                ),
+                const ListTile(
+                  title: Text('Information required for product delivery (required)'),
+                )// TODO: 背景色を灰色、文字色を黒、フォントをロボットにする
+
+                ListTile(
+                  title: const Text('Full Name', style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const FullNameSetPage()));
+                  },
                 ),
                 ListTile(
-                  title: const Text('Bank Account', style: TextStyle(color: Colors.black)),
-                  onTap: () {// 一つまでしか設定できない。
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const BankAccountSetupPage()));
+                  title: const Text('Phone Number', style: TextStyle(color: Colors.black)),
+                  onTap: () { // TODO: 三つまで選択できるようにする。
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SMSSetPage()));
                   },
                 ),
                 ListTile(
                   title: const Text('Address', style: TextStyle(color: Colors.black)),
-                  onTap: () { // 三つまで選択できる。
+                  onTap: () { // TODO: 三つまで選択できるようにする。
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const AddressSetPage()));
                   },
+                ),
+                const ListTile(// コンテンツって感じ
+                  title: Text('Othher'),// TODO: 背景色を灰色、文字色を黒、フォントをロボットにする
                 ),
                 ListTile(
                   title: const Text('Contacts'),

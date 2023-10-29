@@ -1,5 +1,3 @@
-
-
 // delete_account_page.dartの中身
 import 'package:bennu_app/viewmodels/settingviewmodels/DeleteAccount_viewmodel.dart';
 import 'package:flutter/material.dart';
