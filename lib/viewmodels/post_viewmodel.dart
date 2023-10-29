@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bennu_app/models/currency.dart';
+// ignore: library_prefixes
+import 'package:bennu_app/models/transaction.dart' as myTransaction;
 
 final postViewModelProvider = StateNotifierProvider<PostViewModel, List<XFile?>>((ref) => PostViewModel());
 
@@ -17,7 +19,7 @@ class PostViewModel extends StateNotifier<List<XFile?>> {
   String _caption = "";
   Currency? selectedCurrency;
   int stock = 0;
-
+  
   void setCaption(String value) {
     _caption = value;
   }
@@ -84,15 +86,51 @@ class PostViewModel extends StateNotifier<List<XFile?>> {
       userIcon: '',
       likesCount: 0,
       commentsCount: 0,
-      relayCount: 0,
-      shareCount: 0,
       buyCount: 0,
+      inCart: 0,
+      shareCount: 0,
       price: 0,
       stock: stock,
+      relayCount: 0,
+      originalSeller: '',
+      currentSeller:  '', 
+      transactionHistory: [],
     );
 
     FirebaseFirestore.instance.collection('posts').add(post.toMap());
-    // NOTE: updateShouldNotify seems to be misplaced. If it's needed, it should be placed properly.
-    // PostViewModel.updateShouldNotify(post as PostViewModel);
   }
+
+  Future<void> purchaseItem(String itemId, String buyerId) async {
+    DocumentReference postRef = FirebaseFirestore.instance.collection('posts').doc(itemId);
+    DocumentSnapshot postSnapshot = await postRef.get();
+    if (!postSnapshot.exists) {
+      throw Exception('Post not found');
+    }
+    Post post = Post.fromMap(postSnapshot.data() as Map<String, dynamic>);
+
+    myTransaction.Transaction newTransaction = myTransaction.Transaction(
+      seller: post.currentSeller,
+      buyer: buyerId,
+      timestamp: DateTime.now(),
+    );
+
+    post.currentSeller = buyerId;
+    post.transactionHistory.add(newTransaction as Transaction);
+
+    await postRef.update(post.toMap());
+  }
+
+  Future<void> reListPost(String postId, String sellerId) async {
+    DocumentReference postRef = FirebaseFirestore.instance.collection('posts').doc(postId);
+    DocumentSnapshot postSnapshot = await postRef.get();
+    if (!postSnapshot.exists) {
+      throw Exception('Post not found');
+    }
+    Post post = Post.fromMap(postSnapshot.data() as Map<String, dynamic>);
+
+    post.currentSeller = sellerId;
+
+    await postRef.update(post.toMap());
+  }
+
 }
