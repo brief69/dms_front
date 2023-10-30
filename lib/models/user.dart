@@ -41,6 +41,10 @@ class User {
     );
   }
 
+  get email => null;
+
+  get publicKey => null;
+
   // ... other properties and methods ...
 
   Future<bool> deleteCurrentUser() async {
