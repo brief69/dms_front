@@ -1,4 +1,5 @@
-# DMS (Distributed Market Share)
+# DMS (Distributed Market Share) 
+## It didn't work and we are working on it again over here.→https://github.com/brief69/dms
 
 ## Overview
 
